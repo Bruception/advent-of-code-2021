@@ -13,7 +13,6 @@ do
     dir=day$day/
     for script in `ls $dir | egrep '^part(1|2)\.py$'`
     do
-        echo `python3 $dir$script`
         answer=`python3 $dir$script 2>/dev/null || printf "Oops! No answer yet :("`
         printf "\\tAnswer for part $part: $answer\n"
         part=$(( $part + 1 ))
