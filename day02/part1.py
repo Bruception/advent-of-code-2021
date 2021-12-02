@@ -13,7 +13,7 @@ for instruction in file:
         horizontal += amount
     elif (direction == 'down'):
         depth += amount
-    elif(direction == 'up'):
+    elif (direction == 'up'):
         depth -= amount
 
 print(depth * horizontal)

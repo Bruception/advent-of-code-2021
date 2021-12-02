@@ -15,7 +15,7 @@ for instruction in file:
         depth += aim * amount
     elif (direction == 'down'):
         aim += amount
-    elif(direction == 'up'):
+    elif (direction == 'up'):
         aim -= amount
 
 print(depth * horizontal)
