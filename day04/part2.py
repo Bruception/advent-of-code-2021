@@ -8,6 +8,7 @@ class Board:
         self.board = board
         self.marked = [[False for j in range(self.m)] for i in range(self.n)]
         self.positions = {}
+        self.hasWon = False
         for i in range(self.n):
             for j in range(self.m):
                 number = board[i][j]
@@ -23,6 +24,7 @@ class Board:
     def checkWin(self):
         for row in self.marked:
             if (all(marked for marked in row)):
+                self.hasWon = True
                 return True
 
         for j in range(self.m):
@@ -30,6 +32,7 @@ class Board:
             for i in range(self.n):
                 col_good &= self.marked[i][j]
             if (col_good):
+                self.hasWon = True
                 return True
 
         return False
@@ -50,18 +53,16 @@ while (True):
         board.append(row)
     boards.append(Board(board))
 
-winner = None
+last_winner = None
 last_number = 0
-seen = set()
 
 for number in number_draws:
     for board in boards:
-        if (board in seen):
+        if (board.hasWon):
             continue
         board.mark(number)
         if (board.checkWin()):
-            winner = board
+            last_winner = board
             last_number = int(number)
-            seen.add(board)
 
-print(winner.getUnmarkedSum() * last_number)
+print(last_winner.getUnmarkedSum() * last_number)
