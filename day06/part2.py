@@ -7,9 +7,10 @@ all_fish = [int(timer) for timer in fish_timers.split(',')]
 
 new_fish = 0
 spawn_days = defaultdict(int)
+n = len(all_fish)
 
 for day in range(256):
-    for i in range(len(all_fish)):
+    for i in range(n):
         all_fish[i] -= 1
         if (all_fish[i] == -1):
             all_fish[i] = 6
@@ -20,4 +21,4 @@ for day in range(256):
         spawn_days[day + 7] += spawn_days[day]
         spawn_days[day + 9] += spawn_days[day]
 
-print(len(all_fish) + new_fish)
+print(n + new_fish)
