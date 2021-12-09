@@ -29,9 +29,9 @@ low_points = [
 ]
 
 def get_area(i, j):
-    if (heightmap[i][j] == 9 or heightmap[i][j] == -1):
+    if (heightmap[i][j] == 9):
         return 0
-    heightmap[i][j] = -1
+    heightmap[i][j] = 9
     return 1 + sum(get_area(di, dj) for di, dj in get_neighbors(i, j))
 
 highest_areas = []
