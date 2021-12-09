@@ -29,24 +29,16 @@ low_points = deque([
     if all(height < heightmap[di][dj] for di, dj in get_neighbors(i, j))
 ])
 
-def get_area(i, j, visited):
-    key = (i, j)
-    if (key in visited):
+def get_area(i, j):
+    if (heightmap[i][j] == 9 or heightmap[i][j] == -1):
         return 0
-    visited.add(key)
-
-    total_area = 1
-
-    for di, dj in get_neighbors(i, j):
-        if (heightmap[di][dj] != 9):
-            total_area += get_area(di, dj, visited)
-
-    return total_area
+    heightmap[i][j] = -1
+    return 1 + sum(get_area(di, dj) for di, dj in get_neighbors(i, j))
 
 highest_areas = []
 
 for i, j in low_points:
-    area = get_area(i, j, set())
+    area = get_area(i, j)
     heapq.heappush(highest_areas, area)
     if (len(highest_areas) > 3):
         heapq.heappop(highest_areas)
