@@ -31,7 +31,7 @@ highest_areas = []
 
 for i, row in enumerate(heightmap):
     for j, height in enumerate(row):
-        if all(height < heightmap[di][dj] for di, dj in get_neighbors(i, j)):
+        if (all(height < heightmap[di][dj] for di, dj in get_neighbors(i, j))):
             area = get_area(i, j)
             heapq.heappush(highest_areas, area)
         if (len(highest_areas) > 3):
