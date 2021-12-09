@@ -21,13 +21,6 @@ def get_neighbors(i, j):
 
     return neighbors
 
-low_points = [
-    (i, j)
-    for i, row in enumerate(heightmap)
-    for j, height in enumerate(row)
-    if all(height < heightmap[di][dj] for di, dj in get_neighbors(i, j))
-]
-
 def get_area(i, j):
     if (heightmap[i][j] == 9):
         return 0
@@ -36,10 +29,12 @@ def get_area(i, j):
 
 highest_areas = []
 
-for i, j in low_points:
-    area = get_area(i, j)
-    heapq.heappush(highest_areas, area)
-    if (len(highest_areas) > 3):
-        heapq.heappop(highest_areas)
+for i, row in enumerate(heightmap):
+    for j, height in enumerate(row):
+        if all(height < heightmap[di][dj] for di, dj in get_neighbors(i, j)):
+            area = get_area(i, j)
+            heapq.heappush(highest_areas, area)
+        if (len(highest_areas) > 3):
+            heapq.heappop(highest_areas)
 
 print(math.prod(highest_areas))
