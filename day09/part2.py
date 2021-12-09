@@ -1,7 +1,6 @@
 import sys
 import math
 import heapq
-from collections import deque
 
 file = open(f'{sys.path[0]}/input.txt', 'r')
 
@@ -22,12 +21,12 @@ def get_neighbors(i, j):
 
     return neighbors
 
-low_points = deque([
+low_points = [
     (i, j)
     for i, row in enumerate(heightmap)
     for j, height in enumerate(row)
     if all(height < heightmap[di][dj] for di, dj in get_neighbors(i, j))
-])
+]
 
 def get_area(i, j):
     if (heightmap[i][j] == 9 or heightmap[i][j] == -1):
