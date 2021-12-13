@@ -16,9 +16,9 @@ def fold_along(axis, line_value):
     return new_coordinates
 
 coordinates = set([tuple(map(int, line.strip().split(','))) for line in all_lines if ',' in line])
-flip_instructions = [line.strip().split()[2].split('=') for line in all_lines if 'fold' in line]
+fold_instructions = [line.strip().split()[2].split('=') for line in all_lines if 'fold' in line]
 
-for axis, value in flip_instructions:
+for axis, value in fold_instructions:
     coordinates = fold_along(axis, int(value))
 
 def draw_coordinates():
