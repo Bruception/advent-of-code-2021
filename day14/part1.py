@@ -1,27 +1,26 @@
 import sys
-from collections import Counter
+from collections import Counter, defaultdict
 
-file = open(f'{sys.path[0]}/input.txt', 'r')
+polymer, _, *rules = open(f'{sys.path[0]}/input.txt', 'r').read().split('\n')
+rules = dict(rule.split(' -> ') for rule in rules)
 
-polymer = file.readline().strip()
-mappings = {pair: value for pair, value in [line.strip().split(' -> ') for line in file if '->' in line]}
+def get_bigrams(bigram_map, letter_frequencies):
+    new_bigram_map = defaultdict(int)
 
-def step(polymer):
-    new_polymer = []
-
-    for i in range(len(polymer) - 1):
-        key = str(polymer[i:i+2])
-        new_polymer.append(polymer[i])
-        if (key in mappings):
-            new_polymer.append(mappings[key])
+    for bigram, frequency in bigram_map.items():
+        middle = rules[bigram]
+        new_bigram_map[bigram[0] + middle] += frequency
+        new_bigram_map[middle + bigram[1]] += frequency
+        letter_frequencies[middle] += frequency
     
-    new_polymer.append(polymer[-1])
+    return new_bigram_map
 
-    return ''.join(new_polymer)
+bigram_map = Counter(a + b for a, b in zip(polymer, polymer[1:]))
+letter_frequencies = Counter(polymer)
 
 for i in range(10):
-    polymer = step(polymer)
+    bigram_map = get_bigrams(bigram_map, letter_frequencies)
 
-counter = Counter(polymer).values()
+frequency_values = letter_frequencies.values()
 
-print(max(counter) - min(counter))
+print(max(frequency_values) - min(frequency_values))
