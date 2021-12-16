@@ -24,9 +24,6 @@ class ExpressionNode:
         operator_function = operator_map[self.type_id]
         return operator_function([child.evaluate() for child in self.children])
 
-def hex_to_binary_string(hex):
-    return ''.join(str(bin(int(ch, base=16)))[2:].zfill(4) for ch in hex)
-
 def parse(binary_string, root, bit_index=0):
     # packet_header
     packet_version = binary_string[bit_index:bit_index+3]
@@ -64,7 +61,7 @@ def parse(binary_string, root, bit_index=0):
     return bit_index
 
 hex_string = open(f'{sys.path[0]}/input.txt', 'r').readline()
-binary_string = hex_to_binary_string(hex_string)
+binary_string = format(int(hex_string, 16), f'0>{len(hex_string) * 4}b')
 
 root = ExpressionNode(0)
 parse(binary_string, root)

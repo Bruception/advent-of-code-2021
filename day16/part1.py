@@ -1,8 +1,5 @@
 import sys
 
-def hex_to_binary_string(hex):
-    return ''.join(str(bin(int(ch, base=16)))[2:].zfill(4) for ch in hex)
-
 def parse(binary_string, bit_index=0):
     global packet_version_total
     # packet_header
@@ -37,7 +34,7 @@ def parse(binary_string, bit_index=0):
     return bit_index
 
 hex_string = open(f'{sys.path[0]}/input.txt', 'r').read()
-binary_string = hex_to_binary_string(hex_string)
+binary_string = format(int(hex_string, 16), f'0>{len(hex_string) * 4}b')
 
 packet_version_total = 0
 parse(binary_string)
