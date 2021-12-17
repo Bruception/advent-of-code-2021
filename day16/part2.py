@@ -1,9 +1,9 @@
 import sys
-import math
+from math import prod
 
 operator_map = {
     0: sum,
-    1: math.prod,
+    1: prod,
     2: min,
     3: max,
     5: lambda c: int(c[0] > c[1]),
@@ -19,13 +19,13 @@ class ExpressionNode:
 
     def evaluate(self):
         if (self.type_id == 4):
-            return int(self.value)
+            return self.value
 
         operator_function = operator_map[self.type_id]
         return operator_function([child.evaluate() for child in self.children])
 
 def parse(binary_string, root, bit_index=0):
-    # packet_header
+    # Packet Header
     packet_version = binary_string[bit_index:bit_index+3]
     type_id = int(binary_string[bit_index+3:bit_index+6], 2)
     bit_index += 6
@@ -34,6 +34,7 @@ def parse(binary_string, root, bit_index=0):
 
     if (type_id == 4): # Literal Value
         value = ''
+
         while (binary_string[bit_index] == '1'):
             value += binary_string[bit_index+1:bit_index+5]
             bit_index += 5

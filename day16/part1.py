@@ -2,7 +2,7 @@ import sys
 
 def parse(binary_string, bit_index=0):
     global packet_version_total
-    # packet_header
+    # Packet Header
     packet_version = binary_string[bit_index:bit_index+3]
     type_id = int(binary_string[bit_index+3:bit_index+6], 2)
     bit_index += 6
@@ -11,6 +11,7 @@ def parse(binary_string, bit_index=0):
 
     if (type_id == 4): # Literal Value
         value = ''
+
         while (binary_string[bit_index] == '1'):
             value += binary_string[bit_index+1:bit_index+5]
             bit_index += 5
