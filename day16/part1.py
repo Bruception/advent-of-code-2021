@@ -1,43 +1,43 @@
 import sys
 
-def parse(binary_string, bit_index=0):
+def parse(bits, i=0):
     global packet_version_total
     # Packet Header
-    packet_version = binary_string[bit_index:bit_index+3]
-    type_id = int(binary_string[bit_index+3:bit_index+6], 2)
-    bit_index += 6
+    packet_version = bits[i:i+3]
+    type_id = int(bits[i+3:i+6], 2)
+    i += 6
 
     packet_version_total += int(packet_version, 2)
 
     if (type_id == 4): # Literal Value
         value = ''
 
-        while (binary_string[bit_index] == '1'):
-            value += binary_string[bit_index+1:bit_index+5]
-            bit_index += 5
+        while (bits[i] == '1'):
+            value += bits[i+1:i+5]
+            i += 5
 
-        value += binary_string[bit_index+1:bit_index+5]
-        bit_index += 5
+        value += bits[i+1:i+5]
+        i += 5
     else: # Operator
-        length_type_id = binary_string[bit_index]
-        bit_index += 1
+        length_type_id = bits[i]
+        i += 1
 
         field_length = 15 if length_type_id == '0' else 11
 
-        remaining = int(binary_string[bit_index:bit_index+field_length], 2)
-        bit_index += field_length
+        remaining = int(bits[i:i+field_length], 2)
+        i += field_length
 
         while (remaining > 0):
-            subpacket_length = parse(binary_string, bit_index) - bit_index
-            bit_index += subpacket_length
+            subpacket_length = parse(bits, i) - i
+            i += subpacket_length
             remaining -= subpacket_length if field_length == 15 else 1
 
-    return bit_index
+    return i
 
 hex_string = open(f'{sys.path[0]}/input.txt', 'r').read()
-binary_string = format(int(hex_string, 16), f'0>{len(hex_string) * 4}b')
+bits = format(int(hex_string, 16), f'0>{len(hex_string) * 4}b')
 
 packet_version_total = 0
-parse(binary_string)
+parse(bits)
 
 print(packet_version_total)
