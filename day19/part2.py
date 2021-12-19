@@ -1,28 +1,17 @@
 import sys
+from itertools import permutations
 from collections import defaultdict, deque
 
 def permute(point):
-    permutations = []
-    used, n = set(), len(point)
-
-    def permute(permutation):
-        if (len(permutation) == n):
-            return permutations.append(tuple(permutation))
-        
-        for j, value in enumerate(point):
-            if (j not in used):
-                used.add(j)
-                permute(permutation + [value])
-                permute(permutation + [-value])
-                used.remove(j)
-
-    permute([])       
-
-    return permutations
+    n = len(point)
+    return [
+        tuple([permutation[j] * (-1 if i & (1 << j) else 1) for j in range(n)])
+        for permutation in list(permutations(point, n))
+        for i in range(1 << n)
+    ]
 
 class Scanner:
     def __init__(self, data):
-        self.name = data[0].split()[2]
         self.beacons = defaultdict(list)
         self.position = (0, 0, 0)
         self.orientation = 0
@@ -35,15 +24,18 @@ class Scanner:
     def get_beacons(self):
         return self.beacons[self.orientation]
 
+def add_positions(a, b):
+    return (a[0] + b[0], a[1] + b[1], a[2] + b[2])
+
 scanners = [
     Scanner(scanner.strip().split('\n'))
     for scanner in open(f'{sys.path[0]}/input.txt', 'r').read().split('\n\n')
 ]
 
-known = deque([scanners[0]])
+known = deque(scanners[:1])
 unknown = set(scanners[1:])
 
-while (known):
+while (unknown):
     current_scanner = known.popleft()
     new_known_scanners = set()
 
@@ -52,17 +44,17 @@ while (known):
             possible_positions = defaultdict(int)
             for beacon in beacons:
                 for beacon2 in current_scanner.get_beacons():
-                    sx = -beacon[0] + beacon2[0]
-                    sy = -beacon[1] + beacon2[1]
-                    sz = -beacon[2] + beacon2[2]
-                    possible_positions[(sx, sy, sz)] += 1
+                    dx = -beacon[0] + beacon2[0]
+                    dy = -beacon[1] + beacon2[1]
+                    dz = -beacon[2] + beacon2[2]
+                    possible_positions[(dx, dy, dz)] += 1
             
             for position, overlap in possible_positions.items():
-                if (overlap >= 12):
+                if (overlap == 12):
                     new_known_scanners.add(scanner)
                     known.append(scanner)
 
-                    scanner.position = tuple(p + p1 for p, p1 in zip(current_scanner.position, position))
+                    scanner.position = add_positions(current_scanner.position, position)
                     scanner.orientation = orientation
     
     unknown.difference_update(new_known_scanners)
