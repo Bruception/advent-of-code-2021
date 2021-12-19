@@ -52,7 +52,8 @@ def can_split(num):
     return -1
 
 def simplify(num):
-    explode_index, split_index = 0, 0
+    explode_index = split_index = 0
+
     while (explode_index != -1 or split_index != -1):
         explode_index, split_index = can_explode(num), can_split(num)
 
