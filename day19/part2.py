@@ -5,8 +5,8 @@ from collections import defaultdict, deque
 def permute(point):
     n = len(point)
     return [
-        tuple([permutation[j] * (-1 if i & (1 << j) else 1) for j in range(n)])
-        for permutation in list(permutations(point, n))
+        tuple(permutation[j] * (-1 if i & (1 << j) else 1) for j in range(n))
+        for permutation in permutations(point, n)
         for i in range(1 << n)
     ]
 
