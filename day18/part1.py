@@ -52,16 +52,13 @@ def can_split(num):
     return -1
 
 def simplify(num):
-    while (True):
+    explode_index, split_index = 0, 0
+    while (explode_index != -1 or split_index != -1):
         explode_index, split_index = can_explode(num), can_split(num)
-
-        if (explode_index == -1 and split_index == -1):
-            break
 
         if (explode_index != -1):
             num = explode(num, explode_index)
-        
-        if (explode_index == -1 and split_index != -1):
+        elif (split_index != -1):
             num = split(num, split_index)
 
     return ''.join(str(token) for token in num)
