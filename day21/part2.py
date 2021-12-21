@@ -6,8 +6,6 @@ possible_rolls = list(product([1, 2, 3], repeat=3))
 
 @cache
 def dirac_dice(p1, p2, s1, s2):
-    if (s1 >= 21):
-        return (1, 0)
     if (s2 >= 21):
         return (0, 1)
 
