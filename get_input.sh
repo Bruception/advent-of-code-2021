@@ -15,5 +15,5 @@ do
     dirNum=`printf "%02d" $day`
     mkdir -p day$dirNum
     printf "Getting input for day $day...\n"
-    printf '%s' "`curl -H "cookie: session=$session" https://adventofcode.com/2021/day/$day/input`" > day$dirNum/input.txt
+    printf '%s' "`curl -sH "cookie: session=$session" https://adventofcode.com/2021/day/$day/input`" > day$dirNum/input.txt
 done
