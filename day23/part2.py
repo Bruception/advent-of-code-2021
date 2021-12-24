@@ -47,7 +47,7 @@ def solve(hall, rooms):
 
         new_room = ('.',) * (empty_spots - 1) + (amphipod,) * (room_size - empty_spots + 1)
         new_rooms = rooms[:room_index] + (new_room,) + rooms[room_index+1:]
-        new_hall = hall[:i] + ('.',) + hall[i + 1:]
+        new_hall = hall[:i] + ('.',) + hall[i+1:]
 
         total_steps = empty_spots + abs(i - room_door)
         cost = total_steps * movement_cost[amphipod]
@@ -68,7 +68,7 @@ def solve(hall, rooms):
             
             new_room = ('.',) * (empty_spots + 1) + room[empty_spots+1:]
             new_rooms = rooms[:i] + (new_room,) + rooms[i+1:]
-            new_hall = hall[:hall_spot] + (amphipod,) + hall[hall_spot + 1:]
+            new_hall = hall[:hall_spot] + (amphipod,) + hall[hall_spot+1:]
 
             room_steps = empty_spots + 1
             total_steps = room_steps + abs(hall_spot - room_doors[i])
